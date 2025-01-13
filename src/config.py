@@ -1,4 +1,9 @@
+from os import getenv
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+dev = str(getenv("DEV")).lower() == "true"
 
 
 class Settings(BaseSettings):
@@ -8,7 +13,7 @@ class Settings(BaseSettings):
     DB_PASS: str
     DB_NAME: str
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=".env" if not dev else ".env-dev")
 
     @property
     def db_url(self):
